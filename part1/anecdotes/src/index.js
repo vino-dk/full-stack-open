@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 const App = (props) => {
@@ -24,12 +24,15 @@ const App = (props) => {
     setPoints(copy);
   }
 
-  return(
+  return (
     <div>
+      <h2>Anecdote of the day</h2>
       <p>{props.anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
       <button onClick={handleVoteClick}>vote</button>
       <button onClick={handleClick}>next anecdote</button>
+      <h2>Top voted Anecdote</h2>
+      <p>{props.anecdotes[points.indexOf(Math.max(...points))]}</p>
     </div>
   );
 }
@@ -45,7 +48,7 @@ const anecdotes = [
 
 ReactDOM.render(
   <React.StrictMode>
-    <App anecdotes={anecdotes}/>
+    <App anecdotes={anecdotes} />
   </React.StrictMode>,
   document.getElementById('root')
 );
