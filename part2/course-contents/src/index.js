@@ -3,12 +3,18 @@ import ReactDOM from 'react-dom';
 
 const Header = ({ course }) => <h1>{course.name}</h1>
 
-const Total = ({ course }) => {
-  const sum = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises
-  return <p>Total of {sum} exercises.</p>
+const TotalExercises = ({ course }) => {
+  const sum = course.parts.reduce((sum, part) => {
+    return sum + part.exercises
+  }, 0)
+  return (
+    <div>
+      Total of {sum} exercises
+    </div>
+  )
 }
 
-const Part = ({part}) => <p>{part.name} {part.exercises}</p>
+const Part = ({ part }) => <p>{part.name} {part.exercises}</p>
 
 const Content = ({ course }) => {
   return (
@@ -18,12 +24,12 @@ const Content = ({ course }) => {
   )
 }
 
-const Course = ({course}) => {
+const Course = ({ course }) => {
   return (
     <div>
       <Header course={course} />
       <Content course={course} />
-      <Total course={course}/>
+      <TotalExercises course={course} />
     </div>
   )
 }
@@ -55,6 +61,19 @@ const App = () => {
       }
     ]
   }
+
+  /*
+  const result = course.parts.filter(exercise => {
+    return exercise.exercises
+  });
+
+  const total = result.reduce( (sum, exercise) => {
+    console.log('what? ', sum, exercise)
+    return sum + exercise
+  },0)
+  
+  */
+
 
   return (
     <div>
