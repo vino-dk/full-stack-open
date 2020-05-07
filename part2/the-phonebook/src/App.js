@@ -2,18 +2,28 @@ import React, { useState } from 'react';
 import Person from './components/Person';
 
 const App = () => {
-  const [persons, setPersons] = useState([])
+  const [persons, setPersons] = useState([{id: null}])
   const [newName, setNewName] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
-    console.log('button clicked', event.target)
-    const personObject = {
-      name: newName,
-      id: persons.length + 1
+    console.log('button clicked', newName)
+    
+    let nameFound = false;
+    for (let i = 0; i < persons.length; i++) {
+      if (persons[i].name === newName) 
+        nameFound = true;
     }
-    setPersons(persons.concat(personObject))
-    setNewName('')
+    if(!nameFound){
+      const personObject = {
+        name: newName,
+        id: persons.length + 1
+      }
+      setPersons(persons.concat(personObject))
+      setNewName('')
+    } else{
+      window.alert(`${newName} is already added to phonebook`);
+    }
   }
 
   const handleNameChange = (event) => {
@@ -39,10 +49,9 @@ const App = () => {
       </form>
 
       <h2>Numbers</h2>
-      <div>debug: {newName}</div>
       {persons.map(person =>
-        <Person key={person.id} person={person}/>
-      )}
+          <Person key={person.id} person={person} />
+        )}
     </div>
   );
 }
