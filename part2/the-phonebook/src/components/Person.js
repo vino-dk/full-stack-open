@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Persons = ({ persons, filterName }) => {
+const Person = ({ persons, filterName }) => {
     return (
         <div>
             {
@@ -11,7 +11,7 @@ const Persons = ({ persons, filterName }) => {
                         .search(filterName.toLowerCase().trim()) >= 0)
                     .map(person =>
                         <p key={person.id}>
-                            {person.name} {person.number}
+                            {person.name} {person.number} 
                         </p>
 
                     )
@@ -20,4 +20,4 @@ const Persons = ({ persons, filterName }) => {
     )
 }
 
-export default Persons;
+export default Person;

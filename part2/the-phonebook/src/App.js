@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import PersonForm from './components/PersonForm';
 import Filter from './components/Filter';
-import Persons from './components/Persons'
+import Person from './components/Person';
+import noteService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,11 +11,13 @@ const App = () => {
   const [filterName, setFilterName] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    noteService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+      })
+      .catch(error => {
+        console.log('failed at getAll')
       })
   }, [])
 
@@ -34,8 +36,17 @@ const App = () => {
         name: newName,
         id: persons.length + 1
       }
-      setPersons(persons.concat(personObject))
-      setNewName('')
+      console.log('post request')
+      noteService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+        })
+        .catch(error => {
+          console.log('failed at posting name.')
+        })
+      console.log('post done')
     } else {
       window.alert(`${newName} is already added to phonebook`);
     }
@@ -55,12 +66,18 @@ const App = () => {
         number: newNumber,
         id: persons.length + 1
       }
-      axios.post('http://localhost:3001/persons/', personObject)
-        .then(response => {
-          setPersons(persons.concat(personObject))
+      console.log('post request')
+      noteService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
         })
+        .catch(error => {
+          console.log('failed at posting.')
+        })
+      console.log('post done')
     } else {
       window.alert(`${newName} is already added to phonebook`);
     }
@@ -79,8 +96,9 @@ const App = () => {
   const handleFilterOnChange = (event) => {
     console.log(event.target.value)
     setFilterName(event.target.value)
-
   }
+
+
 
   return (
     <div>
@@ -106,7 +124,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons
+      <Person
         persons={persons}
         filterName={filterName}
       />
