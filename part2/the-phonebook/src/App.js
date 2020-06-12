@@ -98,8 +98,6 @@ const App = () => {
     setFilterName(event.target.value)
   }
 
-
-
   return (
     <div>
 
@@ -127,6 +125,8 @@ const App = () => {
       <Person
         persons={persons}
         filterName={filterName}
+        setPersons={setPersons}
+        
       />
 
     </div>
