@@ -1,3 +1,24 @@
 {
-  "persons": []
+  "persons": [
+    {
+      "name": "hej",
+      "number": "213124124",
+      "id": 1
+    },
+    {
+      "name": "Arto Hellas",
+      "number": "23987231",
+      "id": 2
+    },
+    {
+      "name": "Bella Storm",
+      "number": "45638219",
+      "id": 3
+    },
+    {
+      "name": "Michael Jordan",
+      "number": "123123412",
+      "id": 4
+    }
+  ]
 }

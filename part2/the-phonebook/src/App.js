@@ -21,44 +21,16 @@ const App = () => {
       })
   }, [])
 
-  const addPerson = (event) => {
+  const addContact = (event) => {
     event.preventDefault()
-    console.log('button clicked', newName)
-
     let nameFound = false;
+    let numberId = null
+
     for (let i = 0; i < persons.length; i++) {
-      if (persons[i].name === newName)
+      if (persons[i].name.toLowerCase() === newName.toLowerCase()) {
         nameFound = true;
-      break;
-    }
-    if (!nameFound) {
-      const personObject = {
-        name: newName,
-        id: persons.length + 1
+        numberId = persons[i].id
       }
-      console.log('post request')
-      noteService
-        .create(personObject)
-        .then(returnedPerson => {
-          setPersons(persons.concat(returnedPerson))
-          setNewName('')
-        })
-        .catch(error => {
-          console.log('failed at posting name.')
-        })
-      console.log('post done')
-    } else {
-      window.alert(`${newName} is already added to phonebook`);
-    }
-  }
-
-  const addNumber = (event) => {
-    event.preventDefault()
-    let nameFound = false;
-
-    for (let i = 0; i < persons.length; i++) {
-      if (persons[i].name === newName)
-        nameFound = true;
     }
     if (!nameFound) {
       const personObject = {
@@ -66,7 +38,6 @@ const App = () => {
         number: newNumber,
         id: persons.length + 1
       }
-      console.log('post request')
       noteService
         .create(personObject)
         .then(returnedPerson => {
@@ -75,13 +46,25 @@ const App = () => {
           setNewNumber('')
         })
         .catch(error => {
-          console.log('failed at posting.')
+          console.log('failed POST request to create a new contact.')
         })
-      console.log('post done')
-    } else {
-      window.alert(`${newName} is already added to phonebook`);
-    }
+    } else if(window.confirm(`${newName} is already added to phonebook, replace the old number?`)) {
+      const personObject = {
+        name: newName,
+        number: newNumber,
+        id: persons.length + 1
+      }
+      noteService
+        .update(numberId, personObject)
+        .then(updatedPerson => {
+          setPersons(persons.map(person => person.id !== numberId ? person : updatedPerson))
+        })
+        .catch(error => {
+          console.log('Failed PUT request to Update phone number.')
+        })
+    };
   }
+
 
   const handleNameOnChange = (event) => {
     console.log(event.target.value)
@@ -116,8 +99,8 @@ const App = () => {
         persons={persons}
         handleNameOnChange={handleNameOnChange}
         handleNumberOnChange={handleNumberOnChange}
-        addNumber={addNumber}
-        addPerson={addPerson}
+        addContact={addContact}
+        
       />
 
       <h2>Numbers</h2>
@@ -126,9 +109,7 @@ const App = () => {
         persons={persons}
         filterName={filterName}
         setPersons={setPersons}
-        
       />
-
     </div>
   );
 }

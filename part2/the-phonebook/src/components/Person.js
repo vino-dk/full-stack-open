@@ -23,9 +23,7 @@ const Person = ({ persons, filterName, setPersons }) => {
                         .search(filterName.toLowerCase().trim()) >= 0)
                     .map(person =>
                         <p key={person.id}>
-                            {person.name}
-                            {person.number}
-                            {<button onClick={() => handleDeleteOnClick(person.id)}>delete</button>}
+                            {person.name}  {person.number}  {<button onClick={() => handleDeleteOnClick(person.id)}>delete</button>}
                         </p>
 
                     )
